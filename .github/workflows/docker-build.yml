@@ -21,4 +21,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: tiempor3al/lime-survey-fca:1.${{ GITHUB_RUN_NUMBER }}
+          tags: tiempor3al/lime-survey-fca:1.${{ github.run_number }}
