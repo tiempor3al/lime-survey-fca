@@ -22,3 +22,6 @@ jobs:
           context: .
           push: true
           tags: tiempor3al/lime-survey-fca:1.${{ github.run_number }}
+          labels: |
+            version=${{ github.run_number }}
+            commit=${{ github.sha }}
