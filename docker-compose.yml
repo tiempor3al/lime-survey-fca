@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  db:
+    image: mariadb:11
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 33061:3306
+  
+  lime:
+    image: tiempor3al/lime-survey-fca:latest
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8041:80
+    volumes:
+      - lime_data:/var/www/html
+
+volumes:
+  db_data: {}
+  lime_data: {}
