@@ -10,12 +10,13 @@ services:
       - 33061:3306
   
   lime:
-    image: tiempor3al/lime-survey-fca:latest
+    # image: tiempor3al/lime-survey-fca:latest
+    image:  lime-survey-fca:local
     restart: always
     depends_on:
       - db
     ports:
-      - 8041:80
+      - 8041:8080
     volumes:
       - lime_data:/var/www/html
 
