@@ -16,7 +16,7 @@ RUN wget -q -O /tmp/limesurvey.zip \
     && rm /tmp/limesurvey.zip
 
 # ── Stage 2: runtime ──────────────────────────────────────────────────────────
-FROM php:8.3-apache
+FROM php:8.3-apache-bookworm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev \
