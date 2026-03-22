@@ -38,10 +38,16 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 
 RUN a2enmod rewrite
 
+# Switch Apache to a non-privileged port so the container can run as www-data
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
+    && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-enabled/000-default.conf \
+    && chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2
+
 WORKDIR /var/www/html
 
 # Copy LimeSurvey into both survey instances
 COPY --from=builder --chown=www-data:www-data /tmp/limesurvey ./abierta
 COPY --from=builder --chown=www-data:www-data /tmp/limesurvey ./distancia
 
-EXPOSE 80
+USER www-data
+EXPOSE 8080
