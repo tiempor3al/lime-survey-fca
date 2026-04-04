@@ -45,6 +45,8 @@ RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
 
 WORKDIR /var/www/html
 
+RUN mkdir -p abierta distancia
+
 # Copy LimeSurvey into both survey instances
 COPY --from=builder --chown=www-data:www-data /tmp/limesurvey ./abierta
 COPY --from=builder --chown=www-data:www-data /tmp/limesurvey ./distancia
