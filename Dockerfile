@@ -1,7 +1,7 @@
-# ── Runtime image (no builder stage, no LimeSurvey files inside) ─────────────
+# ── Runtime image (no LimeSurvey baked in) ───────────────────────────────────
 FROM php:8.3-apache-bookworm
 
-# Install runtime dependencies (including download tools)
+# Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         unzip \
@@ -26,21 +26,22 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 
 RUN a2enmod rewrite
 
-# Apache on port 8080 (non-privileged) + fix permissions
+# Apache configuration: run on port 8080 + suppress AH00558 warning
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
     && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-enabled/000-default.conf \
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
     && chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2
 
 WORKDIR /var/www/html
 
-# Create the two instances with correct ownership (so www-data can write)
+# Create directories for the two LimeSurvey instances
 RUN mkdir -p abierta distancia \
     && chown -R www-data:www-data /var/www/html
 
-# LimeSurvey version (change here when you want to upgrade)
-ENV LIMESURVEY_VERSION=6.16.13%2B260316
+# LimeSurvey version
+ENV LIMESURVEY_VERSION=6.16.15%2B260330
 
-# Copy and make executable the entrypoint
+# Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
@@ -48,4 +49,3 @@ USER www-data
 EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint.sh"]
-# CMD is inherited from the official php:apache image → apache2-foreground
