@@ -39,7 +39,7 @@ RUN mkdir -p abierta distancia \
     && chown -R www-data:www-data /var/www/html
 
 # LimeSurvey version
-ENV LIMESURVEY_VERSION=6.16.15%2B260330
+ENV LIMESURVEY_VERSION=6.17.4+260520
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh
