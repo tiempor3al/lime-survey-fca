@@ -1,5 +1,5 @@
 # ── Runtime image (no LimeSurvey baked in) ───────────────────────────────────
-FROM php:8.3-apache-bookworm
+FROM php:8.3.36-apache-bookworm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
